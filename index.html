@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- SEO Meta Tags -->
+    <title>Letra Explosiva - Jogo de Digitação Rápida</title>
+    <meta name="description"
+        content="Letra Explosiva é um jogo de digitação rápida! Digite as letras antes que caiam e acumule combos para a maior pontuação. Jogue no celular ou computador!">
+    <meta name="keywords" content="jogo, digitação, letras, typing game, arcade, mobile game, browser game">
+    <meta name="author" content="GameLetras">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Letra Explosiva - Jogo de Digitação Rápida">
+    <meta property="og:description"
+        content="Digite as letras antes que caiam! Jogo arcade de digitação com power-ups e combos.">
+    <meta property="og:image" content="icons/icon-512.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Letra Explosiva">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="no-select">
+    <div id="app">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen">
+            <h1 class="font-game">LETRA EXPLOSIVA</h1>
+            <p class="subtitle font-ui">Digite as letras antes que caiam!</p>
+
+            <div class="high-score font-ui" style="display: none;">
+                🏆 Recorde: <span id="highScoreStart" class="font-game">0</span>
+            </div>
+
+            <button class="game-btn" onclick="startGame()">
+                INICIAR JOGO
+            </button>
+
+            <div class="instructions font-ui">
+                <p>⌨️ Use o teclado ou toque nas letras</p>
+                <p>⏸️ ESC ou P para pausar</p>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen hidden">
+            <!-- Header -->
+            <div class="game-header">
+                <div class="stat">
+                    <span class="stat-label">Pts:</span>
+                    <span id="score" class="stat-value score font-game">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Nível:</span>
+                    <span id="level" class="stat-value level font-game">1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Combo:</span>
+                    <span id="combo" class="stat-value combo font-game">x1</span>
+                </div>
+                <div class="stat">
+                    <span id="lives" class="stat-value lives">❤️❤️❤️</span>
+                </div>
+            </div>
+
+            <!-- Game Area -->
+            <div id="gameArea"></div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <svg viewBox="0 0 1000 20" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="spikeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff4466;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#cc0033;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <polygon
+                        points="0,20 12.5,0 25,20 37.5,0 50,20 62.5,0 75,20 87.5,0 100,20 112.5,0 125,20 137.5,0 150,20 162.5,0 175,20 187.5,0 200,20 212.5,0 225,20 237.5,0 250,20 262.5,0 275,20 287.5,0 300,20 312.5,0 325,20 337.5,0 350,20 362.5,0 375,20 387.5,0 400,20 412.5,0 425,20 437.5,0 450,20 462.5,0 475,20 487.5,0 500,20 512.5,0 525,20 537.5,0 550,20 562.5,0 575,20 587.5,0 600,20 612.5,0 625,20 637.5,0 650,20 662.5,0 675,20 687.5,0 700,20 712.5,0 725,20 737.5,0 750,20 762.5,0 775,20 787.5,0 800,20 812.5,0 825,20 837.5,0 850,20 862.5,0 875,20 887.5,0 900,20 912.5,0 925,20 937.5,0 950,20 962.5,0 975,20 987.5,0 1000,20"
+                        fill="url(#spikeGradient)" />
+                </svg>
+            </div>
+
+            <!-- Virtual Keyboard -->
+            <div id="virtualKeyboard" class="virtual-keyboard"></div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pauseScreen" class="screen hidden">
+            <h2 class="font-game">⏸️ PAUSADO</h2>
+            <button class="game-btn" onclick="resumeGame()">
+                CONTINUAR
+            </button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <h2 class="font-game">FIM DE JOGO</h2>
+
+            <p class="final-score-label font-ui">Pontuação Final</p>
+            <p id="finalScore" class="final-score font-game">0</p>
+
+            <div class="stats font-ui">
+                <p>Maior Combo: <span id="maxCombo">x1</span></p>
+                <p>Nível Alcançado: <span id="levelReached">1</span></p>
+                <p>🏆 Recorde: <span id="highScore">0</span></p>
+            </div>
+
+            <button class="game-btn" onclick="restartGame()">
+                JOGAR NOVAMENTE
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Script -->
+    <script src="game.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed'));
+            });
+        }
+    </script>
+</body>
+
+</html>

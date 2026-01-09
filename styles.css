@@ -1,0 +1,502 @@
+/* ==========================================
+   LETRA EXPLOSIVA - Game Styles
+   Mobile-First Design
+   ========================================== */
+
+/* CSS Variables */
+:root {
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #1a0a2e;
+    --bg-tertiary: #0a1a2e;
+    --color-primary: #00ffaa;
+    --color-secondary: #ff6b9d;
+    --color-accent: #ffaa00;
+    --color-text: #88ffdd;
+    --color-danger: #ff4466;
+    --font-game: 'Orbitron', monospace;
+    --font-ui: 'Rajdhani', sans-serif;
+}
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-ui);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+}
+
+/* Prevent text selection on mobile */
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* ==========================================
+   Typography
+   ========================================== */
+.font-game {
+    font-family: var(--font-game);
+}
+
+.font-ui {
+    font-family: var(--font-ui);
+}
+
+/* ==========================================
+   Animations
+   ========================================== */
+@keyframes fall {
+    from { transform: translateY(-80px); }
+    to { transform: translateY(calc(var(--game-height, 100vh) - 120px)); }
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(2.5); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes particle {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+@keyframes scorePopup {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 170, 0.5); }
+    50% { box-shadow: 0 0 40px rgba(0, 255, 170, 0.8); }
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+    50% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes powerUpFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* ==========================================
+   Game Container
+   ========================================== */
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-image: 
+        linear-gradient(rgba(0, 255, 170, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 170, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* ==========================================
+   Screens
+   ========================================== */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.screen.hidden {
+    display: none !important;
+}
+
+/* Start Screen */
+#startScreen {
+    z-index: 20;
+    text-align: center;
+}
+
+#startScreen h1 {
+    font-size: clamp(2rem, 8vw, 4rem);
+    color: var(--color-primary);
+    animation: glow 2s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+}
+
+#startScreen .subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--color-text);
+    opacity: 0.8;
+    margin-bottom: 2rem;
+}
+
+/* High Score Display */
+.high-score {
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+}
+
+.high-score span {
+    font-family: var(--font-game);
+    font-weight: bold;
+}
+
+/* Game Button */
+.game-btn {
+    font-family: var(--font-game);
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    border: 2px solid var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary) 0%, #00cc88 100%);
+    color: var(--bg-primary);
+    font-weight: bold;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    transition: transform 0.3s ease;
+    touch-action: manipulation;
+}
+
+.game-btn:hover, .game-btn:active {
+    transform: scale(1.05);
+}
+
+.instructions {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.6;
+}
+
+/* ==========================================
+   Game Screen
+   ========================================== */
+#gameScreen {
+    z-index: 10;
+}
+
+/* Header */
+.game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%);
+    z-index: 15;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+}
+
+.stat {
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-label {
+    opacity: 0.7;
+}
+
+.stat-value {
+    font-family: var(--font-game);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.stat-value.score { color: var(--color-primary); }
+.stat-value.combo { color: var(--color-secondary); }
+.stat-value.lives { color: var(--color-accent); }
+.stat-value.level { color: #66ccff; }
+
+/* Game Area */
+#gameArea {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 180px; /* Space for virtual keyboard */
+    overflow: hidden;
+}
+
+/* For desktop, expand game area */
+@media (min-width: 768px) and (hover: hover) {
+    #gameArea {
+        bottom: 80px; /* Less space needed without virtual keyboard */
+    }
+}
+
+/* Falling Letters */
+.falling-letter {
+    position: absolute;
+    font-family: var(--font-game);
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    animation: fall linear forwards;
+    text-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+    cursor: default;
+    user-select: none;
+    z-index: 5;
+}
+
+.falling-letter.exploding {
+    animation: explode 0.4s ease-out forwards !important;
+}
+
+/* Particles */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: particle 0.6s ease-out forwards;
+    pointer-events: none;
+}
+
+/* Score Popup */
+.score-popup {
+    position: absolute;
+    font-family: var(--font-game);
+    font-weight: 700;
+    font-size: 1.5rem;
+    animation: scorePopup 0.8s ease-out forwards;
+    pointer-events: none;
+    color: var(--color-primary);
+    text-shadow: 0 0 10px var(--color-primary);
+}
+
+/* Danger Zone */
+.danger-zone {
+    position: absolute;
+    bottom: 180px; /* Above virtual keyboard */
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,68,102,0.3) 100%);
+    z-index: 10;
+}
+
+@media (min-width: 768px) and (hover: hover) {
+    .danger-zone {
+        bottom: 80px;
+    }
+}
+
+.danger-zone svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Power-ups */
+.power-up {
+    position: absolute;
+    font-size: 2rem;
+    animation: powerUpFloat 1s ease-in-out infinite, fall linear forwards;
+    cursor: pointer;
+    z-index: 6;
+}
+
+/* ==========================================
+   Virtual Keyboard (Mobile)
+   ========================================== */
+.virtual-keyboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(0deg, rgba(10,10,26,0.98) 0%, rgba(10,10,26,0.95) 100%);
+    padding: 0.5rem;
+    display: grid;
+    gap: 4px;
+    z-index: 20;
+}
+
+/* Hide on desktop with mouse */
+@media (min-width: 768px) and (hover: hover) {
+    .virtual-keyboard {
+        display: none !important;
+    }
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+.key {
+    font-family: var(--font-game);
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+    font-weight: bold;
+    min-width: clamp(28px, 8vw, 40px);
+    height: clamp(36px, 10vw, 48px);
+    border-radius: 6px;
+    border: 1px solid var(--color-primary);
+    background: rgba(0, 255, 170, 0.1);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    touch-action: manipulation;
+}
+
+.key:active, .key.pressed {
+    background: var(--color-primary);
+    color: var(--bg-primary);
+    transform: scale(0.95);
+}
+
+.key.highlight {
+    animation: pulse 0.5s ease-out;
+    background: rgba(0, 255, 170, 0.3);
+}
+
+/* ==========================================
+   Pause Screen
+   ========================================== */
+#pauseScreen {
+    z-index: 25;
+    background: rgba(10, 10, 26, 0.9);
+}
+
+#pauseScreen h2 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+}
+
+/* ==========================================
+   Game Over Screen
+   ========================================== */
+#gameOverScreen {
+    z-index: 25;
+    background: rgba(10, 10, 26, 0.95);
+    text-align: center;
+}
+
+#gameOverScreen h2 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+}
+
+#gameOverScreen .final-score-label {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+}
+
+#gameOverScreen .final-score {
+    font-size: clamp(3rem, 10vw, 5rem);
+    color: var(--color-primary);
+    animation: glow 2s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+}
+
+#gameOverScreen .stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    color: var(--color-text);
+}
+
+#gameOverScreen .stats span {
+    font-family: var(--font-game);
+    color: var(--color-accent);
+}
+
+.new-record {
+    color: var(--color-accent) !important;
+    animation: pulse 1s infinite;
+}
+
+/* ==========================================
+   Feedback Effects
+   ========================================== */
+.shake {
+    animation: shake 0.5s ease-out;
+}
+
+.flash-danger {
+    animation: flashDanger 0.3s ease-out;
+}
+
+@keyframes flashDanger {
+    0%, 100% { background-color: transparent; }
+    50% { background-color: rgba(255, 68, 102, 0.3); }
+}
+
+/* ==========================================
+   Responsive Adjustments
+   ========================================== */
+@media (max-width: 360px) {
+    .game-header {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    .stat-label {
+        display: none;
+    }
+    
+    .key {
+        min-width: 24px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    #gameArea {
+        top: 50px;
+        bottom: 120px;
+    }
+    
+    .virtual-keyboard {
+        padding: 0.25rem;
+    }
+    
+    .key {
+        height: 28px;
+    }
+}
