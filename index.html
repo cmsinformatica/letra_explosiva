@@ -58,6 +58,10 @@
                 INICIAR JOGO
             </button>
 
+            <button class="game-btn-secondary" onclick="showLeaderboard()">
+                🏆 RANKING
+            </button>
+
             <div class="instructions font-ui">
                 <p>⌨️ Use o teclado ou toque nas letras</p>
                 <p>⏸️ ESC para pausar</p>
@@ -128,11 +132,53 @@
                 <p>🏆 Recorde: <span id="highScore">0</span></p>
             </div>
 
-            <button class="game-btn" onclick="restartGame()">
-                JOGAR NOVAMENTE
+            <div class="game-over-buttons">
+                <button class="game-btn" onclick="restartGame()">
+                    JOGAR NOVAMENTE
+                </button>
+                <button class="game-btn-secondary" onclick="showLeaderboard()">
+                    🏆 RANKING
+                </button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Screen -->
+        <div id="leaderboardScreen" class="screen hidden">
+            <h2 class="font-game">🏆 TOP 10</h2>
+
+            <div id="leaderboardList" class="leaderboard-list">
+                <p class="loading font-ui">Carregando...</p>
+            </div>
+
+            <button class="game-btn" onclick="hideLeaderboard()">
+                VOLTAR
             </button>
         </div>
+
+        <!-- Name Input Modal -->
+        <div id="nameModal" class="modal hidden">
+            <div class="modal-content">
+                <h3 class="font-game">🎉 NOVO RECORDE!</h3>
+                <p class="font-ui">Você entrou no Top 10!</p>
+                <p class="modal-score font-game" id="modalScore">0</p>
+
+                <input type="text" id="playerNameInput" class="name-input font-ui" placeholder="Digite seu nome"
+                    maxlength="20" autocomplete="off">
+
+                <div class="modal-buttons">
+                    <button class="game-btn" onclick="submitScore()">
+                        SALVAR
+                    </button>
+                    <button class="game-btn-secondary" onclick="skipSaveScore()">
+                        PULAR
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Supabase Integration -->
+    <script src="supabase.js"></script>
 
     <!-- Game Script -->
     <script src="game.js"></script>

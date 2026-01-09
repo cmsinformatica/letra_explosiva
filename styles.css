@@ -18,13 +18,16 @@
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     overflow: hidden;
     touch-action: manipulation;
@@ -59,55 +62,130 @@ body {
    Animations
    ========================================== */
 @keyframes fall {
-    from { transform: translateY(-80px); }
-    to { transform: translateY(calc(var(--game-height, 100vh) - 120px)); }
+    from {
+        transform: translateY(-80px);
+    }
+
+    to {
+        transform: translateY(calc(var(--game-height, 100vh) - 120px));
+    }
 }
 
 @keyframes explode {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(2.5); opacity: 0.8; }
-    100% { transform: scale(0); opacity: 0; }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(2.5);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
 }
 
 @keyframes particle {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
 }
 
 @keyframes scorePopup {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50px) scale(1.5);
+        opacity: 0;
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 170, 0.5); }
-    50% { box-shadow: 0 0 40px rgba(0, 255, 170, 0.8); }
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(0, 255, 170, 0.8);
+    }
 }
 
 @keyframes glow {
-    0%, 100% { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
-    50% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor; }
+
+    0%,
+    100% {
+        text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    }
+
+    50% {
+        text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+    }
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-10px); }
-    40%, 80% { transform: translateX(10px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-10px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(10px);
+    }
 }
 
 @keyframes slideIn {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes powerUpFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
 }
 
 /* ==========================================
@@ -117,7 +195,7 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-    background-image: 
+    background-image:
         linear-gradient(rgba(0, 255, 170, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 255, 170, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
@@ -189,7 +267,8 @@ body {
     touch-action: manipulation;
 }
 
-.game-btn:hover, .game-btn:active {
+.game-btn:hover,
+.game-btn:active {
     transform: scale(1.05);
 }
 
@@ -217,7 +296,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(10, 10, 26, 0.95) 0%, transparent 100%);
     z-index: 15;
     font-size: clamp(0.8rem, 2.5vw, 1rem);
 }
@@ -239,10 +318,21 @@ body {
     font-size: 1.2em;
 }
 
-.stat-value.score { color: var(--color-primary); }
-.stat-value.combo { color: var(--color-secondary); }
-.stat-value.lives { color: var(--color-accent); }
-.stat-value.level { color: #66ccff; }
+.stat-value.score {
+    color: var(--color-primary);
+}
+
+.stat-value.combo {
+    color: var(--color-secondary);
+}
+
+.stat-value.lives {
+    color: var(--color-accent);
+}
+
+.stat-value.level {
+    color: #66ccff;
+}
 
 /* Game Area */
 #gameArea {
@@ -250,14 +340,16 @@ body {
     top: 60px;
     left: 0;
     right: 0;
-    bottom: 180px; /* Space for virtual keyboard */
+    bottom: 180px;
+    /* Space for virtual keyboard */
     overflow: hidden;
 }
 
 /* For desktop, expand game area */
 @media (min-width: 768px) and (hover: hover) {
     #gameArea {
-        bottom: 80px; /* Less space needed without virtual keyboard */
+        bottom: 80px;
+        /* Less space needed without virtual keyboard */
     }
 }
 
@@ -304,11 +396,12 @@ body {
 /* Danger Zone */
 .danger-zone {
     position: absolute;
-    bottom: 180px; /* Above virtual keyboard */
+    bottom: 180px;
+    /* Above virtual keyboard */
     left: 0;
     right: 0;
     height: 16px;
-    background: linear-gradient(180deg, transparent 0%, rgba(255,68,102,0.3) 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 68, 102, 0.3) 100%);
     z-index: 10;
 }
 
@@ -340,7 +433,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(0deg, rgba(10,10,26,0.98) 0%, rgba(10,10,26,0.95) 100%);
+    background: linear-gradient(0deg, rgba(10, 10, 26, 0.98) 0%, rgba(10, 10, 26, 0.95) 100%);
     padding: 0.5rem;
     display: grid;
     gap: 4px;
@@ -378,7 +471,8 @@ body {
     touch-action: manipulation;
 }
 
-.key:active, .key.pressed {
+.key:active,
+.key.pressed {
     background: var(--color-primary);
     color: var(--bg-primary);
     transform: scale(0.95);
@@ -462,8 +556,15 @@ body {
 }
 
 @keyframes flashDanger {
-    0%, 100% { background-color: transparent; }
-    50% { background-color: rgba(255, 68, 102, 0.3); }
+
+    0%,
+    100% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: rgba(255, 68, 102, 0.3);
+    }
 }
 
 /* ==========================================
@@ -474,11 +575,11 @@ body {
         padding: 0.5rem;
         font-size: 0.75rem;
     }
-    
+
     .stat-label {
         display: none;
     }
-    
+
     .key {
         min-width: 24px;
         height: 32px;
@@ -491,12 +592,222 @@ body {
         top: 50px;
         bottom: 120px;
     }
-    
+
     .virtual-keyboard {
         padding: 0.25rem;
     }
-    
+
     .key {
         height: 28px;
     }
+}
+
+/* ==========================================
+   Secondary Button
+   ========================================== */
+.game-btn-secondary {
+    font-family: var(--font-game);
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    border: 2px solid var(--color-accent);
+    background: transparent;
+    color: var(--color-accent);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+    margin-top: 1rem;
+}
+
+.game-btn-secondary:hover,
+.game-btn-secondary:active {
+    background: var(--color-accent);
+    color: var(--bg-primary);
+    transform: scale(1.05);
+}
+
+/* Game Over Buttons */
+.game-over-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* ==========================================
+   Leaderboard Screen
+   ========================================== */
+#leaderboardScreen {
+    z-index: 30;
+    background: rgba(10, 10, 26, 0.98);
+    text-align: center;
+}
+
+#leaderboardScreen h2 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+}
+
+.leaderboard-list {
+    width: 100%;
+    max-width: 400px;
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(0, 255, 170, 0.1);
+    border: 1px solid rgba(0, 255, 170, 0.3);
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.leaderboard-item:hover {
+    transform: scale(1.02);
+}
+
+.leaderboard-item.top-3 {
+    background: linear-gradient(135deg, rgba(255, 170, 0, 0.2) 0%, rgba(255, 107, 157, 0.2) 100%);
+    border-color: var(--color-accent);
+}
+
+.leaderboard-rank {
+    font-family: var(--font-game);
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 40px;
+    color: var(--color-accent);
+}
+
+.leaderboard-rank.gold {
+    color: #ffd700;
+}
+
+.leaderboard-rank.silver {
+    color: #c0c0c0;
+}
+
+.leaderboard-rank.bronze {
+    color: #cd7f32;
+}
+
+.leaderboard-name {
+    flex: 1;
+    text-align: left;
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.leaderboard-score {
+    font-family: var(--font-game);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.leaderboard-empty {
+    color: var(--color-text);
+    opacity: 0.6;
+    padding: 2rem;
+}
+
+.loading {
+    color: var(--color-text);
+    opacity: 0.8;
+}
+
+/* ==========================================
+   Name Input Modal
+   ========================================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 26, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 90%;
+    width: 350px;
+    box-shadow: 0 0 40px rgba(0, 255, 170, 0.3);
+}
+
+.modal-content h3 {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+}
+
+.modal-score {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    animation: glow 2s ease-in-out infinite;
+}
+
+.name-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: 2px solid var(--color-primary);
+    border-radius: 8px;
+    background: rgba(0, 255, 170, 0.1);
+    color: var(--color-text);
+    text-align: center;
+    outline: none;
+    margin-bottom: 1.5rem;
+}
+
+.name-input:focus {
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+}
+
+.name-input::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal-buttons .game-btn {
+    margin: 0;
+}
+
+.modal-buttons .game-btn-secondary {
+    margin: 0;
 }

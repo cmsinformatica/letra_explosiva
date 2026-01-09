@@ -372,6 +372,9 @@ class LetraExplosiva {
 
         this.showScreen('gameOverScreen');
         this.updateHighScoreDisplay();
+
+        // Check if qualifies for global leaderboard
+        checkAndShowNameModal(this.state.score, this.state.level, this.state.maxCombo);
     }
 
     clearIntervals() {
@@ -716,7 +719,110 @@ function resumeGame() {
     game.resumeGame();
 }
 
+// ==========================================
+// Leaderboard Functions
+// ==========================================
+let pendingScore = null;
+
+async function showLeaderboard() {
+    const leaderboardScreen = document.getElementById('leaderboardScreen');
+    const leaderboardList = document.getElementById('leaderboardList');
+
+    // Hide other screens
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('gameOverScreen').classList.add('hidden');
+    leaderboardScreen.classList.remove('hidden');
+
+    // Show loading
+    leaderboardList.innerHTML = '<p class="loading font-ui">Carregando...</p>';
+
+    // Fetch scores
+    const scores = await leaderboard.getTopScores();
+
+    if (scores.length === 0) {
+        leaderboardList.innerHTML = '<p class="leaderboard-empty font-ui">Nenhuma pontuação ainda. Seja o primeiro!</p>';
+        return;
+    }
+
+    // Render scores
+    leaderboardList.innerHTML = scores.map((score, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        let rankEmoji = `#${rank}`;
+
+        if (rank === 1) { rankClass = 'gold'; rankEmoji = '🥇'; }
+        else if (rank === 2) { rankClass = 'silver'; rankEmoji = '🥈'; }
+        else if (rank === 3) { rankClass = 'bronze'; rankEmoji = '🥉'; }
+
+        return `
+            <div class="leaderboard-item ${rank <= 3 ? 'top-3' : ''}">
+                <span class="leaderboard-rank ${rankClass}">${rankEmoji}</span>
+                <span class="leaderboard-name font-ui">${escapeHtml(score.player_name)}</span>
+                <span class="leaderboard-score">${score.score}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+function hideLeaderboard() {
+    document.getElementById('leaderboardScreen').classList.add('hidden');
+    document.getElementById('startScreen').classList.remove('hidden');
+}
+
+async function checkAndShowNameModal(score, level, maxCombo) {
+    // Check if score qualifies for top 10
+    const qualifies = await leaderboard.isTopScore(score);
+
+    if (qualifies) {
+        pendingScore = { score, level, maxCombo };
+        document.getElementById('modalScore').textContent = score;
+        document.getElementById('nameModal').classList.remove('hidden');
+        document.getElementById('playerNameInput').focus();
+    }
+}
+
+async function submitScore() {
+    if (!pendingScore) return;
+
+    const nameInput = document.getElementById('playerNameInput');
+    const playerName = nameInput.value.trim() || 'Anônimo';
+
+    // Submit to Supabase
+    const success = await leaderboard.submitScore(
+        playerName,
+        pendingScore.score,
+        pendingScore.level,
+        pendingScore.maxCombo
+    );
+
+    // Hide modal
+    document.getElementById('nameModal').classList.add('hidden');
+    nameInput.value = '';
+    pendingScore = null;
+
+    if (success) {
+        // Show leaderboard
+        showLeaderboard();
+    }
+}
+
+function skipSaveScore() {
+    document.getElementById('nameModal').classList.add('hidden');
+    document.getElementById('playerNameInput').value = '';
+    pendingScore = null;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ==========================================
+// Initialize
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     game = new LetraExplosiva();
     game.init();
 });
+
