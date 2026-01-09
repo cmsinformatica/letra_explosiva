@@ -234,8 +234,8 @@ class LetraExplosiva {
     // Event Handlers
     // ==========================================
     handleKeydown(e) {
-        // Pause toggle
-        if (e.key === 'Escape' || e.key.toLowerCase() === 'p') {
+        // Escape always pauses
+        if (e.key === 'Escape') {
             if (this.state.isRunning || this.state.isPaused) {
                 this.togglePause();
                 return;
@@ -257,9 +257,19 @@ class LetraExplosiva {
         if (!this.state.isRunning || this.state.isPaused) return;
 
         const key = e.key.toUpperCase();
+
+        // Check if key is a letter
         if (this.LETTERS.includes(key)) {
-            this.hitLetter(key);
-            this.highlightKey(key);
+            // Try to hit the letter first
+            const letterExists = this.state.letters.some(l => l.letter === key);
+
+            if (letterExists) {
+                this.hitLetter(key);
+                this.highlightKey(key);
+            } else if (key === 'P') {
+                // Only pause with P if no letter P is on screen
+                this.togglePause();
+            }
         }
     }
 
